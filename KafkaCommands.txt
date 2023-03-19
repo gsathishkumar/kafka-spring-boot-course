@@ -1,0 +1,14 @@
+cd C:\Sathish\Softwares\kafka_2.13-3.4.0\bin\windows
+zookeeper-server-start.bat ..\..\config\zookeeper.properties
+
+kafka-server-start.bat ..\..\config\server-0.properties
+kafka-server-start.bat ..\..\config\server-1.properties
+kafka-server-start.bat ..\..\config\server-2.properties
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic library-events --from-beginning
+kafka-consumer-groups.bat --bootstrap-server localhost:9092 --describe --group library-events-listener-group
+kafka-topics.bat --bootstrap-server localhost:9092 --list
+kafka-topics.bat --bootstrap-server localhost:9092 --describe --topic library-events
+kafka-topics.bat --create --topic <TOPIC_NAME> --bootstrap-server localhost:9092 --replication-factor 3 --partitions 3
+kafka-topics.bat --alter --bootstrap-server localhost:9092 --topic library-events --config min.insync.replicas=2
+kafka-topics.bat --bootstrap-server localhost:9092 --delete --topic <TOPIC_NAME>
+kafka-delete-records.bat --bootstrap-server localhost:9092 --offset-json-file C:\tmp\clean-messages-from-topic.config
